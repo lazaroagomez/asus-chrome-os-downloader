@@ -1,0 +1,439 @@
+# 📊 Complete ASUS RMA Database Schema Documentation
+
+## Overview
+
+* **Database Type:** Relational, transactional database with multi-line structure per case
+* **Hierarchy:** One `RMA_NO` (case) can have N lines (identified by `RMA_LINE_NO`)
+* **Line Represents:** Each line represents a specific repair, part, or service action
+* **Total Fields:** 167 fields organized into 9 categories
+
+---
+
+## 1️⃣ CUSTOMER INFORMATION (Fields 1-7)
+
+**1 - CUSTOMER_TYPE_DESC** Customer segmentation category (End-user, B2B, EDU, Distributor)
+
+**2 - CUSTOMER_COUNTRY** Geographic location of the customer for regional analysis
+
+**3 - CUSTOMER_SURVEY_AGREEMENT** Boolean flag indicating customer consent for marketing and feedback surveys
+
+**4 - CUSTOMER_NAME_NON_END_USER** Identifier for corporate or B2B client contacts
+
+**5 - CUSTOMER_RETURN_TIMES** Number of times customer has returned products (KPI for problematic customers)
+
+**6 - CUSTOMER_EMAIL_DOMAIN** Email domain of customer for institutional analysis
+
+**7 - CUSTOMER_CLAIM_CODE_DESC** Type of customer complaint or claim code
+
+---
+
+## 2️⃣ RMA BASIC INFORMATION (Fields 8-16)
+
+**8 - RMA_CENTER** Service center location identifier for performance comparison
+
+**9 - RMA_NO** Primary identifier for the RMA case at header level (PRIMARY KEY)
+
+**10 - RMA_TYPE_DESC** Classification of the RMA case type (Warranty, DOA, OOW, Repair)
+
+**11 - RMA_TYPE_REASON_DESC** Detailed categorization reason for the RMA request
+
+**12 - RMA_SHIPPING_TYPE_DESC** Shipping method used for the device (Mail In/Out, PUR In/Out, etc.)
+
+**13 - RMA_TRANSFER_RMA_NO** Links to RMA cases transferred between service centers
+
+**14 - RMA_LINE_NO** Line number within a single RMA case, part of composite key
+
+**15 - RMA_HEADER_STATUS** Current status of RMA case (CLOSED, REPAIR, SHIP)
+
+**16 - RMA_OPERATOR_APPLY** Operator who initially applied or created the RMA
+
+---
+
+## 3️⃣ SERIAL NUMBERS & DEVICE INFORMATION (Fields 17-26)
+
+**17 - RMA_SERIAL_NO** Original device serial number provided by the customer
+
+**18 - RMA_RECEIVE_SN** Serial number physically verified upon receipt at service center
+
+**19 - RMA_ASUS_SN** Internal ASUS serial number
+
+**20 - RMA_ASUS_PN** Internal ASUS part number
+
+**21 - RMA_ORG_IMEI** Original IMEI for mobile or cellular devices
+
+**22 - RMA_ORG_IMEI2** Secondary IMEI for dual-SIM devices
+
+**23 - RMA_NEW_IMEI** New IMEI assigned after mainboard replacement
+
+**24 - RMA_NEW_IMEI2** New secondary IMEI after mainboard replacement
+
+**25 - MANUAL_ORG_SERIAL_NO** Manually entered original serial number
+
+**26 - MANUAL_NEW_SERIAL_NO** Manually entered new serial number
+
+---
+
+## 4️⃣ RMA FLAGS & SPECIAL CASES (Fields 27-33)
+
+**27 - RMA_PRE_SALE_FLAG** Boolean flag for pre-sale returns (e.g., distributor returns)
+
+**28 - RMA_DOA** Dead On Arrival flag indicating unit never functioned
+
+**29 - RMA_OOW** Out Of Warranty status flag (IW=In Warranty, OOW=Out Of Warranty)
+
+**30 - RMA_CID** Customer Induced Damage flag (e.g., liquid spill, physical drop)
+
+**31 - RMA_CID_REASON_MEMO** Technician notes explaining the customer induced damage
+
+**32 - RMA_CID_NO_CHARGE_REASON_DESC** Reason code for waiving CID-related service charges
+
+**33 - RMA_CID_BYPASS_PIC_REASON_CODE_DESC** Reason code for not attaching CID damage photos
+
+---
+
+## 5️⃣ SERVICE & PROBLEM INFORMATION (Fields 34-41)
+
+**34 - RMA_SERVICE_TYPE_DESC** Type of service classification (After-sales, Legal requirement, etc.)
+
+**35 - RMA_SERVICE_TYPE_REASON_DESC** Detailed reason categorization for the service type
+
+**36 - RMA_APPLY_MEMO** Initial application notes and special requests from customer
+
+**37 - RMA_PROBLEM_DESCRIPTION_RECEIVE** Customer's description of the problem or malfunction
+
+**38 - RMA_REPAIR_SOLUTION_MEMO** Technician's implemented solution and diagnostic findings
+
+**39 - RMA_PRODUCT_EVENT_MEMO** Notes documenting special product events or conditions
+
+**40 - PREVIOUS_REPAIR_RMA_NO** RMA number of previous repair for same unit
+
+**41 - PREVIOUS_REPAIR_MEMO** Notes from previous repair attempt
+
+---
+
+## 6️⃣ PRODUCT INFORMATION (Fields 42-48)
+
+**42 - RMA_PRODUCT_TYPE_DESC** Product category classification (Notebook, Desktop, Phone, Server, etc.)
+
+**43 - RMA_PRODUCT_CSID_CODE_DESC** Service identification code with warranty and service details
+
+**44 - RMA_BRAND_NAME** Brand identifier (ASUS, ROG, ASUS_NUC, etc.)
+
+**45 - RMA_SALES_COMPANY** Company or retailer that sold the product
+
+**46 - PRODUCT_REPAIR_TIMES** Number of previous repairs for this specific unit (KPI for lemon units)
+
+**47 - WAIT_LAST_REASON** Last recorded reason for case waiting status
+
+**48 - RMA_APPLY_ACCOUNT** Account identifier that submitted the RMA request
+
+---
+
+## 7️⃣ PART NUMBERS & MODELS (Fields 49-72)
+
+**49 - RMA_PART_NO** Part number of the item returned for service
+
+**50 - RMA_60_PART_NO** Part number for 60-day return period items
+
+**51 - RMA_90R_PART_NO** Part number for 90-day return period items
+
+**52 - RMA_PRODUCT_PART_NO** Main product-level part number (SKU)
+
+**53 - RMA_PART_DESC** Human-readable description of the returned part
+
+**54 - RMA_60_PART_NO_DESC** Description of the 60-day return part
+
+**55 - RMA_90R_PART_NO_DESC** Description of the 90-day return part
+
+**56 - RMA_PRODUCT_PART_DESC** Description of the main product
+
+**57 - RMA_PART_NO_MODEL** Model designation associated with the part number
+
+**58 - RMA_60_PART_NO_MODEL** Model for 60-day return part
+
+**59 - RMA_90R_PART_NO_MODEL** Model for 90-day return part
+
+**60 - RMA_PRODUCT_PART_NO_MODEL** Product model identifier for failure rate analysis
+
+**61 - REAL_PART_NO** Actual part number used in repair from inventory
+
+**62 - MANUAL_ORG_PART_NO** Manually entered original part number
+
+**63 - MANUAL_NEW_PART_NO** Manually entered new part number
+
+**64 - KBO_ORG_PART_NO** Original part number being replaced
+
+**65 - KBO_ORG_PART_DESC** Description of original part being replaced
+
+**66 - KBO_NEW_PART_NO** New part number used for replacement
+
+**67 - KBO_NEW_PART_DESC** Description of new replacement part
+
+**68 - KBO_NEW_PART_NO_GROUP** Component group classification (MYLAR, TAPE, PAD, MAIN BOARD, etc.)
+
+**69 - REPAIR_ORG_PART_NO** Original part number of component being repaired
+
+**70 - REPAIR_ORG_PART_DESC** Description of original component being repaired
+
+**71 - REPAIR_NEW_PART_NO** New part number used in repair
+
+**72 - REPAIR_NEW_PART_DESC** Description of new part used in repair
+
+---
+
+## 8️⃣ ACCOUNTING & PRICING (Fields 73-76)
+
+**73 - ACCOUNT_PROJECT_QUOTATION_UNIT** Billing unit identifier for accounting purposes
+
+**74 - ACCOUNT_PROJECT_SOURCE** Accounting project source system identifier
+
+**75 - ACCOUNT_PROJECT_QUOTATION_PRICE_CODE** Quote price code for billing reference
+
+**76 - ACCOUNT_PROJECT_QUOTATION_PRICE_CODE_DESC** Description of the quotation price code
+
+---
+
+## 9️⃣ WARRANTY INFORMATION (Fields 77-87)
+
+**77 - WARRANTY_COUNTRY** Country where the warranty coverage is valid
+
+**78 - WARRANTY_START_DATE** Date when warranty coverage begins
+
+**79 - WARRANTY_END_DATE** Date when warranty coverage expires
+
+**80 - WARRANTY_PURCHASE_DATE** Original customer purchase date of the product
+
+**81 - WARRANTY_OOW_CHARGE_AMOUNT** Monetary charge for out-of-warranty service
+
+**82 - WARRANTY_CUSTOMER_SHIPTO** Shipping destination for warranty returns
+
+**83 - EXTENTED_WARRANTY_PACKAGE_PN** Part number of extended warranty package
+
+**84 - EXTENTED_WARRANTY_PACKAGE_NAME** Name and description of extended warranty package
+
+**85 - RMA_SERVICE_TYPE_DESC** Type of service classification (After-sales, Legal requirement, etc.)
+
+**86 - RMA_SERVICE_TYPE_REASON_DESC** Detailed reason categorization for the service type
+
+**87 - WARRANTY_OOW_CHARGE_AMOUNT** Monetary charge for out-of-warranty service
+
+---
+
+## 🔟 KBO (KEEP BROKEN OUT) INFORMATION (Fields 88-102)
+
+**88 - KBO_REQUEST_TYPE** Type of KBO request (WEB_REPLACE, WEB_APPLY, WEB_EXCHANGE)
+
+**89 - KBO_CHARGE** Charge category for KBO (LADP, CID, OOW, SALE)
+
+**90 - KBO_ACTION** Action taken on KBO request (REPLACED, PARTRETURN, PARTFAIL)
+
+**91 - KBO_ORDER_TYPE** Order type for KBO (SYS, ECN, Manually, RCN)
+
+**92 - KBO_ORG_SERIAL_NO** Original serial number for KBO order
+
+**93 - KBO_NEW_SERIAL_NO** New serial number assigned after replacement
+
+**94 - KBO_INITIAL_SN** Initial serial number before any replacements
+
+**95 - KBO_APPLY_DATE** Timestamp when KBO request was submitted
+
+**96 - KBO_ALLOCATED_DATE** Timestamp when KBO parts were allocated
+
+**97 - KBO_BOOK_DATE** Timestamp when KBO was booked in system
+
+**98 - KBO_READY_DATE** Timestamp when KBO parts were ready
+
+**99 - KBO_DROP_DATE** Timestamp when KBO request was dropped or cancelled
+
+**100 - KBO_SUBMIT_DATE** Timestamp when KBO was submitted for processing
+
+**101 - KBO_NO** Unique KBO request identifier
+
+**102 - KBO_ORDER_NO** KBO order number reference
+
+**103 - KBO_CSN_NO** Customer service number for KBO
+
+---
+
+## 1️⃣1️⃣ EXCEPTION HANDLING (Fields 104-110)
+
+**104 - EXCEPTION_CODE_DESC** Exception code description (SWAP, Credit back, etc.)
+
+**105 - EXCEPTION_SUB_REASON_CODE_DESC** Sub-category reason for exception
+
+**106 - EXCEPTION_PROBLEM_CODE_DESC** Problem code associated with exception
+
+**107 - EXCEPTION_APPROVAL_REJECT_MEMO** Notes on exception approval or rejection
+
+**108 - EXCEPTION_RESPONSIBILITY** Party responsible for exception (ASUS, ASP)
+
+**109 - EXCEPTION_CREDIT_NO** Credit reference number for exception
+
+**110 - ARN_BYPASS_REASON** Reason for bypassing ARN (Advanced Repair Notice)
+
+---
+
+## 1️⃣2️⃣ REPAIR DETAIL INFORMATION (Fields 111-125)
+
+**111 - REPAIR_DETAIL_DATA_SOURCE** Source of repair detail data (REPAIR, FINALTEST, PRETEST)
+
+**112 - REPAIR_DETAIL_SEQUENCE_NO** Sequential number for repair detail records
+
+**113 - REPAIR_PROBLEM_CODE_DESC** Problem code identified during repair diagnosis
+
+**114 - REPAIR_PART_ORDER_TYPE** Order type for repair parts (SYS, ECN, Manually, RCN)
+
+**115 - REPAIR_ORG_SERIAL_NO** Original serial number of component being repaired
+
+**116 - REPAIR_NEW_SERIAL_NO** New serial number after component replacement
+
+**117 - REPAIR_ACTION_CODE_DESC** Action taken during repair (Replace, ECN, Reassemble, etc.)
+
+**118 - REPAIR_ACTION_SUB_REASON_CODE_DESC** Sub-category reason for repair action
+
+**119 - REPAIR_DETAIL_MEMO** Detailed notes on repair process and findings
+
+**120 - REPAIR_NEW_PART_LOCATION** Location identifier for new part inventory
+
+**121 - REPAIR_CHIPSET_MEASURE_RESULT** Chipset measurement test results
+
+**122 - REPAIR_CHIPSET_MEASURE_RESULT_MEMO** Notes on chipset measurement results
+
+**123 - REPAIR_TECHNICIAN** Technician identifier who performed repair
+
+**124 - REPAIR_EQUIPMENT_NO** Equipment number used in repair process
+
+**125 - REPAIR_ITEM_RESULT** Final result classification (O-IW, O-CID, O-OOW, RE-CID, etc.)
+
+---
+
+## 1️⃣3️⃣ OPERATOR INFORMATION (Fields 126-132)
+
+**126 - RMA_OPERATOR_RECEIVE** Operator who received the RMA device
+
+**127 - RMA_OPERATOR_KEYIN** Operator who entered RMA data into system
+
+**128 - RMA_OPERATOR_REPAIR** Operator who performed the repair work
+
+**129 - RMA_OPERATOR_PRETEST** Operator who performed pre-repair testing
+
+**130 - RMA_OPERATOR_FINALTEST** Operator who performed final testing
+
+**131 - RMA_OPERATOR_SHIP** Operator who processed shipping
+
+**132 - RMA_OPERATOR_CLOSED** Operator who closed the RMA case
+
+---
+
+## 1️⃣4️⃣ TIMELINE & DATES (Fields 133-141)
+
+**133 - RMA_ISSUE_DATE** Timestamp when RMA was issued
+
+**134 - RMA_APPLY_DATE** Timestamp when RMA application was submitted
+
+**135 - RMA_RECEIVE_DATE** Timestamp when device was received at service center
+
+**136 - RMA_KEYIN_DATE** Timestamp when RMA data was entered into system
+
+**137 - RMA_REPAIR_DATE** Timestamp when repair was completed
+
+**138 - RMA_FINAL_TEST_DATE** Timestamp when final testing was completed
+
+**139 - RMA_SHIP_DATE** Timestamp when repaired device was shipped
+
+**140 - RMA_CLOSED_DATE** Timestamp when RMA case was closed
+
+**141 - RMA_TRANSFER_SHIP_OUT_DATE** Timestamp when device was shipped for transfer
+
+---
+
+## 1️⃣5️⃣ SHIPPING INFORMATION (Fields 142-147)
+
+**142 - RMA_SHIP_IN_TRACKING_NO** Tracking number for incoming shipment
+
+**143 - RMA_SHIP_IN_FORWARDER** Shipping carrier for incoming device
+
+**144 - RMA_SHIP_OUT_TRACKING_NO** Tracking number for outgoing shipment
+
+**145 - RMA_SHIP_OUT_FORWARDER** Shipping carrier for outgoing device
+
+**146 - RMA_CUSTOMER_PAY_SHIPIN** Customer payment for incoming shipping
+
+**147 - RMA_CUSTOMER_PAY_SHIPOUT** Customer payment for outgoing shipping
+
+---
+
+## 1️⃣6️⃣ TESTING INFORMATION (Fields 148-167)
+
+**148 - TEST_TYPE** Type of testing performed (WTP, CTP, SMMI_FINALTEST, AWDT)
+
+**149 - ADT_LOG** Flag indicating ADT (Advanced Diagnostic Tool) log exists
+
+**150 - ADT_BYPASS_REASON_CODE_DESC** Reason code for bypassing ADT testing
+
+**151 - ADT_MEMO** Notes on ADT testing process
+
+**152 - ADT_TYPE** Type of component tested with ADT
+
+**153 - ADT_RESULT** ADT test result (pass, fail, warning)
+
+**154 - WTP_LOG** Flag indicating WTP (Windows Test Program) log exists
+
+**155 - WTP_TEST_RESULT** WTP test result status (PASS, FAIL, UPLOAD)
+
+**156 - WTP_TEST_RESULT_PROBLEM_CODE** Problem codes identified in WTP testing
+
+**157 - WTP_VERSION** Version of WTP software used
+
+**158 - WTP_BYPASS_REASON_CODE_DESC** Reason code for bypassing WTP testing
+
+**159 - WTP_BYPASS_REASON_MEMO** Notes on WTP bypass reasoning
+
+**160 - JB_TEST_TYPE** Type of Jig Board test performed
+
+**161 - JB_TEST_START_TIME** Timestamp when Jig Board test started
+
+**162 - JB_BIOS_UPDATE_VERSION** BIOS version updated during Jig Board test
+
+**163 - JB_BIOS_UPDATE_RESULT** Result of BIOS update (Success, Can_not_detect_EC, etc.)
+
+**164 - JB_BYPASS_REASON_CODE_DESC** Reason code for bypassing Jig Board test
+
+**165 - JB_BYPASS_MEMO** Notes on Jig Board test bypass
+
+**166 - JB_BYPASS_ERROR_CODE** Error code from Jig Board bypass
+
+**167 - SUPPORT_JIGBOARD_R** Jig Board support status flag
+
+---
+
+## 1️⃣7️⃣ ECN (ENGINEERING CHANGE NOTICE) (Fields within repair section)
+
+**ECN_NO** Engineering Change Notice number
+
+**COND_REWORK** Conditional rework flag (Y/N)
+
+**ECN_STATUS** Engineering Change Notice status (FINISH, BYPASS)
+
+---
+
+## Key Performance Indicators (KPIs)
+
+- **Customer Return Times:** Track problematic customers or quality issues
+- **Product Repair Times:** Identify "lemon" units (>2 repairs)
+- **RMA_HEADER_STATUS = 'CLOSED':** Essential filter for completed cases
+- **Warranty Status:** `WARRANTY_END_DATE < RMA_APPLY_DATE` confirms OOW
+- **CID Flag:** Critical for billing and warranty validation
+- **DOA Flag:** Manufacturing/QA failure analysis
+
+---
+
+## Database Keys
+
+- **Primary Key (Header):** `RMA_NO`
+- **Composite Key (Line):** `RMA_NO` + `RMA_LINE_NO`
+- **Foreign Keys:** Various serial numbers and part numbers link to inventory systems
+
+---
+
+*Total Fields Documented: 167*
